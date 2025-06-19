@@ -9994,8 +9994,8 @@ boolean P_MoveChaseCamera(player_t *player, camera_t *thiscam, boolean resetcall
 			thiscam->momx = player->mo->momx;
 			thiscam->momy = player->mo->momy;
 			thiscam->momz = player->mo->momz;
-			thiscam->aiming = player->aiming;
-			thiscam->angle = player->viewz;
+			thiscam->aiming = player->cmd->aiming << 16;
+			thiscam->angle = player->cmd->angleturn << 16;
 			thiscam->subsector = player->mo->subsector;
 			thiscam->floorz = player->mo->floorz;
 			thiscam->ceilingz = player->mo->ceilingz;
