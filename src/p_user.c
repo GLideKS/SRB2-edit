@@ -9990,7 +9990,7 @@ boolean P_MoveChaseCamera(player_t *player, camera_t *thiscam, boolean resetcall
 			// set the values to the player's values so they can still be used
 			thiscam->x = player->mo->x;
 			thiscam->y = player->mo->y;
-			thiscam->z = player->mo->z;
+			thiscam->z = player->viewz;
 			thiscam->momx = player->mo->momx;
 			thiscam->momy = player->mo->momy;
 			thiscam->momz = player->mo->momz;
