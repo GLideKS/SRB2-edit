@@ -9993,9 +9993,19 @@ boolean P_MoveChaseCamera(player_t *player, camera_t *thiscam, boolean resetcall
 			thiscam->z = player->viewz;
 			thiscam->momx = player->mo->momx;
 			thiscam->momy = player->mo->momy;
-			thiscam->momz = player->mo->momz;
-			thiscam->aiming = player->cmd.aiming << 16;
-			thiscam->angle = player->cmd.angleturn << 16;
+			thiscam->momz = player->mo->momz;			
+
+			if (player == &players[consoleplayer])
+			{
+				thiscam->angle = localangle;
+				thiscam->aiming = localaiming;
+			} 
+			else if (player == &players[secondarydisplayplayer])
+			{
+				thiscam->angle = localangle2;
+				thiscam->aiming = localaiming2;
+			}
+			
 			thiscam->subsector = player->mo->subsector;
 			thiscam->floorz = player->mo->floorz;
 			thiscam->ceilingz = player->mo->ceilingz;
