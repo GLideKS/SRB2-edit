@@ -109,7 +109,8 @@ static fixed_t paldiv = 0;
   * \param	lump	Lump name to get data from
   * \return	fademask_t for lump
   */
-static fademask_t *F_GetFadeMask(UINT8 masknum, UINT8 scrnnum) {
+static fademask_t *F_GetFadeMask(UINT8 masknum, UINT8 scrnnum)
+{
 	static char lumpname[10] = "FADEmmss";
 	static fademask_t fm = {NULL,0,0,0,0,0};
 	lumpnum_t lumpnum;
@@ -431,6 +432,8 @@ static void F_DoColormapWipe(fademask_t *fademask, UINT8 *colormap)
   */
 void F_WipeStartScreen(void)
 {
+	if (rendermode == render_none)
+		return;
 #ifndef NOWIPE
 #ifdef HWRENDER
 	if(rendermode != render_soft)
@@ -448,6 +451,9 @@ void F_WipeStartScreen(void)
   */
 void F_WipeEndScreen(void)
 {
+	if (rendermode == render_none)
+		return;
+
 #ifndef NOWIPE
 #ifdef HWRENDER
 	if(rendermode != render_soft)
@@ -562,6 +568,13 @@ void F_RunWipe(UINT8 wipetype, boolean drawMenu)
 		}
 		lastwipetic = nowtime;
 
+		if (dedicated)
+		{
+			// run the wipe without drawing on a dedicated server, so we don't start while clients are still wiping
+			NetKeepAlive(); // Update the network so we don't cause timeouts
+			continue;
+		}
+
 		// Wipe styles
 		if (wipestyle == WIPESTYLE_COLORMAP)
 		{
@@ -601,13 +614,9 @@ void F_RunWipe(UINT8 wipetype, boolean drawMenu)
 
 		if (drawMenu)
 		{
-#ifdef HAVE_THREADS
 			I_lock_mutex(&m_menu_mutex);
-#endif
 			M_Drawer(); // menu is drawn even on top of wipes
-#ifdef HAVE_THREADS
 			I_unlock_mutex(m_menu_mutex);
-#endif
 		}
 
 		I_FinishUpdate(); // page flip or blit buffer
