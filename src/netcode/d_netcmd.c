@@ -52,7 +52,6 @@
 #include "../md5.h"
 #include "../m_perfstats.h"
 #include "../u_list.h"
-#include "../lua_custombuild.h"
 
 #ifdef NETGAME_DEVMODE
 #define CV_RESTRICT CV_NETVAR
@@ -3568,12 +3567,6 @@ static void Command_Addfilelocal(void)
 	for (i = 0; fn[i] != '\0'; i++)
 		if (!isprint(fn[i]) || fn[i] == ';')
 			return;
-
-    int musiconly = W_VerifyNMUSlumps(fn, false);
-    if (!musiconly)
-    {
-        takis_complexlocaladdons = true;
-    }
     
 	// Add any wad file, ignoring checks for if it contains complex things like
 	// lua. Great for complex but client-side customizations, like different
