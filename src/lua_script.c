@@ -439,6 +439,9 @@ int LUA_PushGlobals(lua_State *L, const char *word)
 	} else if (fastcmp(word, "chatactive")) {
 		lua_pushboolean(L, chat_on);
 		return 1;
+	} else if (fastcmp(word, "rasinbuild")) {
+		lua_pushboolean(L, true);
+		return 1;
 	}
 	return 0;
 }
