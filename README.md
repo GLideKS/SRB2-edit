@@ -1,12 +1,3 @@
-## AX (Addon Extensions)
-AX is a fork of SRB2 that extends addon capabilities and provides small APIs useful to addon authors and server operators
-
-features:
-- lua_httplib — a lightweight HTTP features exposed to addons (see lua_httplib.c).
-
-Notes
-- AX is maintained for the Zombie Escape ReBlood server; it may introduce changes that are not compatible with the official SRB2 builds, its intended for server use and not client use.
-
 # Sonic Robo Blast 2
 [![latest release](https://badgen.net/github/release/STJr/SRB2/stable)](https://github.com/STJr/SRB2/releases/latest)
 
