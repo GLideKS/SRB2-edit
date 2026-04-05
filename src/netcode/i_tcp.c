@@ -757,7 +757,9 @@ static void SOCK_Send(void)
 	{
 		int e = errno; // save error code so it can't be modified later
 		if (!ALLOWEDERROR(e))
-			I_Error("SOCK_Send, error sending to node %d (%s) #%u: %s", doomcom->remotenode,
+			// I_Error("SOCK_Send, error sending to node %d (%s) #%u: %s", doomcom->remotenode,
+			// 	SOCK_GetNodeAddress(doomcom->remotenode), e, strerror(e));
+			CONS_Alert(CONS_WARNING, "SOCK_Send, error sending to node %d (%s) #%u: %s\n", doomcom->remotenode,
 				SOCK_GetNodeAddress(doomcom->remotenode), e, strerror(e));
 	}
 }
