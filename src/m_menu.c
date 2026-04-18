@@ -184,8 +184,8 @@ static fixed_t char_scroll = 0;
 static tic_t keydown = 0;
 
 // now THIS is cool!
-static tic_t gc_spin_down = 0;
-static boolean addons_forcelocal = false; 
+static tic_t gc_ralt_down = 0;
+static boolean addons_forcelocal = false;
 
 // Lua
 static huddrawlist_h luahuddrawlist_playersetup;
@@ -1232,7 +1232,7 @@ static menuitem_t OP_CameraOptionsMenu[] =
 
 	{IT_HEADER,            NULL, "Display Options", NULL, 60},
 	{IT_STRING  | IT_CVAR, NULL, "Crosshair", &cv_crosshair, 66},
-	{IT_STRING  | IT_CVAR, NULL, "Inverted Crosshair", &cv_crosshair_invert, 66},
+	{IT_STRING  | IT_CVAR, NULL, "Inverted Crosshair", &cv_crosshair_invert, 71},
 };
 
 static menuitem_t OP_Camera2OptionsMenu[] =
@@ -3258,13 +3258,13 @@ boolean M_Responder(event_t *ev)
 				// added 5-2-98 remap virtual keys (mouse & joystick buttons)
 				switch (ch)
 				{
-                    case KEY_LSHIFT:
+                    case KEY_RALT:
                         if (keydown == 1)
                         {
-                            if (gc_spin_down == 0)
-                                gc_spin_down = 2;
+                            if (gc_ralt_down == 0)
+                                gc_ralt_down = 2;
                             else
-                                gc_spin_down = 0;
+                                gc_ralt_down = 0;
                         }
                         break;
 					case KEY_MOUSE1:
@@ -6525,7 +6525,7 @@ static void M_DrawAddons(void)
 	size_t t, b; // top and bottom item #s to draw in directory
 	const UINT8 *flashcol = NULL;
 	UINT8 hilicol;
-    boolean locally = (gc_spin_down > 0 || addons_forcelocal);
+    boolean locally = (gc_ralt_down > 0 || addons_forcelocal);
 
 	// hack - need to refresh at end of frame to handle addfile...
 	if (refreshdirmenu & M_AddonsRefresh())
@@ -6545,7 +6545,7 @@ static void M_DrawAddons(void)
     else
     {
         V_DrawCenteredString(BASEVIDWIDTH/2, 5, V_ALLOWLOWERCASE,
-            va("Loading locally. %s", addons_forcelocal ? "" : "(L-SHIFT)")
+            va("Loading locally. %s", addons_forcelocal ? "" : "(R-ALT)")
         );
     }
 #ifdef ENFORCE_WAD_LIMIT
@@ -6575,14 +6575,6 @@ static void M_DrawAddons(void)
 	x -= (boxwidth - (MAXSTRINGLENGTH*8+6))/2;
 
 	m = (BASEVIDHEIGHT - currentMenu->y + 2) - (y - 1);
-
-	m = (BASEVIDHEIGHT - currentMenu->y + 2) - (y - 1);
-
-    // draw the local-addon-loading border first (duh)
-    if (locally)
-    {
-        V_DrawFill(x-22, y - 2, boxwidth + 2, m + 2, 159);
-    }
 
 	// draw the file path and the top white + black lines of the box
 	V_DrawString(x-21, (y - 16) + (lsheadingheight - 12), highlightflags|V_ALLOWLOWERCASE, M_AddonsHeaderPath());
@@ -6777,8 +6769,8 @@ static void M_HandleAddons(INT32 choice)
 #endif
 	}
 
-    boolean locally = (gc_spin_down > 0 || addons_forcelocal);
-    
+    boolean locally = (gc_ralt_down > 0 || addons_forcelocal);
+
 	switch (choice)
 	{
 		case KEY_DOWNARROW:
@@ -6896,7 +6888,7 @@ static void M_HandleAddons(INT32 choice)
 	if (exitmenu)
 	{
         addons_forcelocal = false;
-        gc_spin_down = 0;
+        gc_ralt_down = 0;
 		closefilemenu(true);
 
 		// secrets disabled by addfile...
