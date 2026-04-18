@@ -13161,6 +13161,10 @@ void P_PlayerAfterThink(player_t *player)
 			else
 				player->viewz = player->mo->z + player->viewheight;
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> Jisk/rasin
 		if (server || addedtogame)
 			P_MoveChaseCamera(player, thiscam, false); // calculate the camera movement
 	}

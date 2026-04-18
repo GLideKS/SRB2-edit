@@ -110,6 +110,7 @@ static patch_t *nopingicon;
 
 // crosshair 0 = off, 1 = cross, 2 = angle, 3 = point, see m_menu.c
 static patch_t *crosshair[HU_CROSSHAIRS]; // 3 precached crosshair graphics
+static patch_t *crosshair_inverted[HU_CROSSHAIRS]; // 3 precached crosshair graphics for subtractive blending
 
 // Show PMs (if host), yoinked from Classic.
 static consvar_t cv_showprivatemessages = CVAR_INIT ("hu_showprivatemessages", "Yes", CV_SAVE|CV_CLIENT|CV_NOSHOWHELP, CV_YesNo, NULL);
@@ -233,6 +234,9 @@ void HU_LoadGraphics(void)
 	{
 		sprintf(buffer, "CROSHAI%c", '1'+i);
 		crosshair[i] = (patch_t *)W_CachePatchName(buffer, PU_HUDGFX);
+
+		sprintf(buffer, "CRSHAII%c", '1'+i);
+		crosshair_inverted[i] = (patch_t *)W_CachePatchName(buffer, PU_HUDGFX);
 	}
 
 	emblemicon = W_CachePatchName("EMBLICON", PU_HUDGFX);

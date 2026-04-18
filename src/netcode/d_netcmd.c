@@ -52,7 +52,6 @@
 #include "../md5.h"
 #include "../m_perfstats.h"
 #include "../u_list.h"
-#include "../lua_custombuild.h"
 
 #ifdef NETGAME_DEVMODE
 #define CV_RESTRICT CV_NETVAR
@@ -121,7 +120,6 @@ static void Command_Playdemo_f(void);
 static void Command_Timedemo_f(void);
 static void Command_Stopdemo_f(void);
 static void Command_StartMovie_f(void);
-static void Command_PauseMovie_f(void);
 static void Command_StopMovie_f(void);
 static void Command_Map_f(void);
 static void Command_ResetCamera_f(void);
@@ -143,7 +141,6 @@ FUNCNORETURN static ATTRNORETURN void Command_Quit_f(void);
 static void Command_Playintro_f(void);
 
 static void Command_Displayplayer_f(void);
-static void Command_GetLogFile_f(void);
 
 static void Command_ExitLevel_f(void);
 static void Command_Showmap_f(void);
@@ -364,9 +361,6 @@ consvar_t cv_pingtimeout = CVAR_INIT ("pingtimeout", "10", CV_SAVE|CV_NETVAR, pi
 // show your ping on the HUD next to framerate. Defaults to warning only (shows up if your ping is > maxping)
 static CV_PossibleValue_t showping_cons_t[] = {{0, "Off"}, {1, "Always"}, {2, "Warning"}, {0, NULL}};
 consvar_t cv_showping = CVAR_INIT ("showping", "Warning", CV_SAVE, showping_cons_t, NULL);
-static CV_PossibleValue_t pingmeasurement_cons_t[] = {{0, "Milliseconds"}, {1, "Frames"}, {0, NULL}};
-consvar_t cv_pingmeasurement = CVAR_INIT ("pingmeasurement", "Milliseconds", CV_SAVE|CV_CLIENT, pingmeasurement_cons_t, NULL);
-consvar_t cv_showcsays = CVAR_INIT ("showcsays", "No", CV_SAVE|CV_CLIENT, CV_YesNo, NULL);
 
 // Intermission time Tails 04-19-2002
 static CV_PossibleValue_t inttime_cons_t[] = {{0, "MIN"}, {3600, "MAX"}, {0, NULL}};
@@ -407,12 +401,6 @@ consvar_t cv_freedemocamera = CVAR_INIT("freedemocamera", "Off", CV_SAVE, CV_OnO
 
 // NOTE: this should be in hw_main.c, but we can't put it there as it breaks dedicated build
 consvar_t cv_glallowshaders = CVAR_INIT ("gr_allowcustomshaders", "On", CV_NETVAR, CV_OnOff, NULL);
-
-consvar_t cv_returnfromconnect = CVAR_INIT ("returnfromconnect", "On", CV_SAVE|CV_CLIENT, CV_OnOff, NULL);
-consvar_t cv_showserverinfo = CVAR_INIT ("showserverinfo", "On", CV_SAVE|CV_CLIENT, CV_OnOff, NULL);
-
-static CV_PossibleValue_t cvarinfo_const_t[] = {{0, "Show All"}, {1, "Hide Origin"}, {2, "Hide Flags"}, {3, "Only Show Values"}, {0, NULL}};
-consvar_t cv_cvarinformation = CVAR_INIT ("cvarinfo", "Show All", CV_CLIENT|CV_SAVE, cvarinfo_const_t, NULL);
 
 char timedemo_name[256];
 boolean timedemo_csv;
@@ -521,7 +509,7 @@ void D_RegisterServerCommands(void)
 
 	COM_AddCommand("addfolder", Command_Addfolder, COM_LUA);
 	COM_AddCommand("addfile", Command_Addfile, COM_LUA);
-	COM_AddCommand("addfilelocal", Command_Addfilelocal, COM_LUA|COM_CLIENT);
+	COM_AddCommand("addfilelocal", Command_Addfilelocal, COM_LUA);
 	COM_AddCommand("listwad", Command_ListWADS_f, COM_LUA);
 
 	COM_AddCommand("runsoc", Command_RunSOC, COM_LUA);
@@ -553,10 +541,6 @@ void D_RegisterServerCommands(void)
 	AddMServCommands();
 
 	CV_RegisterVar(&cv_glallowshaders);
-
-    // server info
-	CV_RegisterVar(&cv_returnfromconnect);
-    CV_RegisterVar(&cv_showserverinfo);
 
 	// p_mobj.c
 	CV_RegisterVar(&cv_itemrespawntime);
@@ -650,10 +634,6 @@ void D_RegisterServerCommands(void)
 	CV_RegisterVar(&cv_maxping);
 	CV_RegisterVar(&cv_pingtimeout);
 	CV_RegisterVar(&cv_showping);
-	CV_RegisterVar(&cv_pingmeasurement);
-	CV_RegisterVar(&cv_showcsays);
-	CV_RegisterVar(&cv_cvarinformation);
-	COM_AddCommand("getlogfile", Command_GetLogFile_f, COM_CLIENT);
 
 	CV_RegisterVar(&cv_allowseenames);
 
@@ -723,7 +703,6 @@ void D_RegisterClientCommands(void)
 
 	COM_AddCommand("screenshot", M_ScreenShot, COM_LUA);
 	COM_AddCommand("startmovie", Command_StartMovie_f, COM_LUA);
-	COM_AddCommand("pausemovie", Command_PauseMovie_f, COM_LUA);
 	COM_AddCommand("stopmovie", Command_StopMovie_f, COM_LUA);
 
 	CV_RegisterVar(&cv_screenshot_option);
@@ -749,8 +728,6 @@ void D_RegisterClientCommands(void)
 	CV_RegisterVar(&cv_gif_downscale);
 	CV_RegisterVar(&cv_gif_dynamicdelay);
 	CV_RegisterVar(&cv_gif_localcolortable);
-	CV_RegisterVar(&cv_gif_maxsize);
-	CV_RegisterVar(&cv_gif_rolling_buffer);
 
 	// register these so it is saved to config
 	CV_RegisterVar(&cv_playername);
@@ -770,8 +747,6 @@ void D_RegisterClientCommands(void)
 	CV_RegisterVar(&cv_rollingdemos);
 	CV_RegisterVar(&cv_netstat);
 	CV_RegisterVar(&cv_netticbuffer);
-	CV_RegisterVar(&cv_mindelay);
-	CV_RegisterVar(&cv_gentlemens);
 
 #ifdef NETGAME_DEVMODE
 	CV_RegisterVar(&cv_fishcake);
@@ -825,10 +800,6 @@ void D_RegisterClientCommands(void)
 	CV_RegisterVar(&cv_chattime);
 	CV_RegisterVar(&cv_chatbacktint);
 	CV_RegisterVar(&cv_consolechat);
-	CV_RegisterVar(&cv_chatx);
-	CV_RegisterVar(&cv_chaty);
-	CV_RegisterVar(&cv_chats1);
-	CV_RegisterVar(&cv_chats2);
 	CV_RegisterVar(&cv_chatnotifications);
 	CV_RegisterVar(&cv_crosshair);
 	CV_RegisterVar(&cv_crosshair2);
@@ -932,15 +903,12 @@ void D_RegisterClientCommands(void)
 	CV_RegisterVar(&cv_cam_lockonboss[0]);
 	CV_RegisterVar(&cv_cam_lockonboss[1]);
 
-	CV_RegisterVar(&cv_wipes);
-
 	// s_sound.c
 	CV_RegisterVar(&cv_soundvolume);
 	CV_RegisterVar(&cv_closedcaptioning);
 	CV_RegisterVar(&cv_digmusicvolume);
 	CV_RegisterVar(&cv_midimusicvolume);
 	CV_RegisterVar(&cv_numChannels);
-	CV_RegisterVar(&cv_consoleinterp);
 
 	// screen.c
 	CV_RegisterVar(&cv_fullscreen);
@@ -956,8 +924,6 @@ void D_RegisterClientCommands(void)
 	CV_RegisterVar(&cv_perfstats);
 	CV_RegisterVar(&cv_ps_samplesize);
 	CV_RegisterVar(&cv_ps_descriptor);
-
-	COM_AddCommand("freezelevel", Command_FreezeLevel_f, COM_LUA|COM_CLIENT);
 
 	// ingame object placing
 	COM_AddCommand("objectplace", Command_ObjectPlace_f, COM_LUA);
@@ -1710,11 +1676,6 @@ static void Command_Stopdemo_f(void)
 static void Command_StartMovie_f(void)
 {
 	M_StartMovie();
-}
-
-static void Command_PauseMovie_f(void)
-{
-	M_PauseMovie();
 }
 
 static void Command_StopMovie_f(void)
@@ -3606,12 +3567,6 @@ static void Command_Addfilelocal(void)
 	for (i = 0; fn[i] != '\0'; i++)
 		if (!isprint(fn[i]) || fn[i] == ';')
 			return;
-
-    int musiconly = W_VerifyNMUSlumps(fn, false);
-    if (!musiconly)
-    {
-        takis_complexlocaladdons = true;
-    }
     
 	// Add any wad file, ignoring checks for if it contains complex things like
 	// lua. Great for complex but client-side customizations, like different
@@ -3661,7 +3616,7 @@ static void Command_Addfolder(void)
 			}
 
 		// Add file on your client directly if you aren't in a netgame.
-		if (!(netgame || multiplayer) || server)
+		if (!(netgame || multiplayer))
 		{
 			P_AddFolder(fn);
 			AddedFilesAdd(&addedfolders, fn);
@@ -4749,16 +4704,6 @@ static void Command_Displayplayer_f(void)
 	CONS_Printf(M_GetText("Displayplayer is %d\n"), displayplayer);
 }
 
-// Print the path of the current logfile
-static void Command_GetLogFile_f(void)
-{
-	#ifdef LOGMESSAGES // just in case
-		CONS_Printf("Current logfile is at %s\n", logfilename);
-	#else
-		CONS_Printf("Logging is disabled!\n");
-	#endif
-}
-
 /** Quits a game and returns to the title screen.
   *
   */
@@ -5004,7 +4949,7 @@ static boolean Skin_CanChange(const char *valstr)
 	if (!(multiplayer || netgame)) // In single player.
 		return true;
 
-	if (CanChangeSkin(consoleplayer))
+	if (CanChangeSkin(consoleplayer) && !P_PlayerMoving(consoleplayer))
 		return true;
 	else
 	{
@@ -5022,7 +4967,7 @@ static boolean Skin2_CanChange(const char *valstr)
 	if (stricmp(skins[players[secondarydisplayplayer].skin]->name, valstr) == 0)
 		return false;
 
-	if (CanChangeSkin(secondarydisplayplayer))
+	if (CanChangeSkin(secondarydisplayplayer) && !P_PlayerMoving(secondarydisplayplayer))
 		return true;
 	else
 	{
@@ -5093,7 +5038,7 @@ static void Color_OnChange(void)
 			return;
 		}
 
-		if (skincolors[players[consoleplayer].skincolor].accessible == true)
+		if (!P_PlayerMoving(consoleplayer) && skincolors[players[consoleplayer].skincolor].accessible == true)
 		{
 			// Color change menu scrolling fix is no longer necessary
 			SendNameAndColor();
@@ -5121,7 +5066,7 @@ static void Color2_OnChange(void)
 	}
 	else
 	{
-		if (skincolors[players[secondarydisplayplayer].skincolor].accessible == true)
+		if (!P_PlayerMoving(secondarydisplayplayer) && skincolors[players[secondarydisplayplayer].skincolor].accessible == true)
 		{
 			// Color change menu scrolling fix is no longer necessary
 			SendNameAndColor2();

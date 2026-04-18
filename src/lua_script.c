@@ -27,6 +27,7 @@
 #include "p_local.h"
 #include "p_slopes.h" // for P_SlopeById and slopelist
 #include "p_polyobj.h" // polyobj_t, PolyObjects
+#include "lua_httplib.h" //adds the httplib
 #ifdef LUA_ALLOW_BYTECODE
 #include "netcode/d_netfil.h" // for LUA_DumpFile
 #endif
@@ -63,6 +64,7 @@ static lua_CFunction liblist[] = {
 	LUA_HudLib, // HUD stuff
 	LUA_ColorLib, // general color functions
 	LUA_InputLib, // inputs
+	LUA_HTTPLib, // http lib
 	NULL
 };
 
@@ -440,6 +442,9 @@ int LUA_PushGlobals(lua_State *L, const char *word)
 		return 1;
 	} else if (fastcmp(word, "chatactive")) {
 		lua_pushboolean(L, chat_on);
+		return 1;
+	} else if (fastcmp(word, "rasinbuild")) {
+		lua_pushboolean(L, true);
 		return 1;
 	}
 
