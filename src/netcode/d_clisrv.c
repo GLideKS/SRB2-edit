@@ -1718,13 +1718,9 @@ void NetUpdate(void)
 	if (nowtime != resptime)
 	{
 		resptime = nowtime;
-#ifdef HAVE_THREADS
 		I_lock_mutex(&m_menu_mutex);
-#endif
 		M_Ticker();
-#ifdef HAVE_THREADS
 		I_unlock_mutex(m_menu_mutex);
-#endif
 		CON_Ticker();
 	}
 
