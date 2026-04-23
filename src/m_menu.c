@@ -5777,10 +5777,10 @@ void M_DrawLevelPlatterHeader(INT32 y, const char *header, boolean headerhighlig
 	y += lsheadingheight - 12;
 	V_DrawString(19, y, (headerhighlight ? MENUCOLOR : 0)|(allowlowercase ? V_ALLOWLOWERCASE : (MENUCAPS)), header);
 	y += 9;
-	V_DrawFill(19, y, 281, 1, (headerhighlight ? yellowmap[3] : 3));
-	V_DrawFill(300, y, 1, 1, 26);
+	V_DrawFill(19, y, 281, 1, (headerhighlight ? V_VMAPToPaletteIndex(cv_menucolor.value) : 3));
+	V_DrawFill(300, y, 1, 1, (cv_menucolor.value == V_INVERTMAP ? 0 : 26));
 	y++;
-	V_DrawFill(19, y, 282, 1, 26);
+	V_DrawFill(19, y, 282, 1, (cv_menucolor.value == V_INVERTMAP ? 0 : 26));
 }
 
 static void M_DrawLevelPlatterWideMap(UINT8 row, UINT8 col, INT32 x, INT32 y, boolean highlight)
@@ -8446,7 +8446,7 @@ static void M_DrawLoadGameData(void)
 				((savetodraw == saveSlotSelected) ? MENUCOLOR : 0)|MENUCAPS,
 				"No File");
 			if (savetodraw == saveSlotSelected)
-				V_DrawFill(x, y+9, 80, 1, yellowmap[3]);
+				V_DrawFill(x, y+9, 80, 1, V_VMAPToPaletteIndex(cv_menucolor.value));
 			y += 11;
 			V_DrawSmallScaledPatch(x, y, 0, savselp[4]);
 			M_DrawStaticBox(x, y, V_80TRANS, 80, 50);
@@ -8516,7 +8516,7 @@ static void M_DrawLoadGameData(void)
 			((savetodraw == saveSlotSelected-1) ? MENUCOLOR : 0)|MENUCAPS,
 			va("File %d", savetodraw+1));
 		if (savetodraw == saveSlotSelected-1)
-				V_DrawFill(x, y+9, 80, 1, yellowmap[3]);
+				V_DrawFill(x, y+9, 80, 1, V_VMAPToPaletteIndex(cv_menucolor.value));
 		y += 11;
 
 		// level image area

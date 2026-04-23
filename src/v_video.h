@@ -201,6 +201,7 @@ UINT8 *V_GetStringColormap(INT32 colorflags);
 // romoney5: menu highlight color
 #define MENUCOLOR (cv_menucolor.value)
 #define MENUREDCOLOR (cv_menucolor.value == V_REDMAP ? V_BLUEMAP : V_REDMAP)
+int V_VMAPToPaletteIndex(INT32 v_map);
 
 // Generalized character drawing function, combining console & chat functionality with a specified font.
 void V_DrawFontCharacter(INT32 x, INT32 y, INT32 c, boolean lowercaseallowed, fixed_t scale, UINT8 *colormap, fontdef_t font);
