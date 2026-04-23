@@ -52,7 +52,7 @@ You can compile the source code normally (see "Compiling") and put the binary in
 - Removed RR's fake contrast since it makes brightress off on walls.
 
 ## Gameplay / Netplay
-- Skin change at any time
+- Skin change at any time. Turn off `restrictmoveskinchange` to be able to do this.
 - Addfilelocal from SRB2K Saturn! (use "`addfilelocal`" command or press R-ALT in the addons menu)
 - Minimum input delay from SRB2Kart Saturn/Ring Racers! ("`mindelay`")
 - Improved startup times! (Code from [SRB2Classic](https://codeberg.org/srb2classic/srb2classic))
