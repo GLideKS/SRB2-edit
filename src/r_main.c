@@ -137,11 +137,11 @@ static CV_PossibleValue_t translucenthud_cons_t[] = {{0, "MIN"}, {10, "MAX"}, {0
 static CV_PossibleValue_t maxportals_cons_t[] = {{0, "MIN"}, {12, "MAX"}, {0, NULL}}; // lmao rendering 32 portals, you're a card
 static CV_PossibleValue_t homremoval_cons_t[] = {{0, "No"}, {1, "Yes"}, {2, "Flash"}, {0, NULL}};
 static CV_PossibleValue_t menubg_cons_t[] = {
-	{15, "White"}, {21, "Gray"}, {28, "Black"}, {47, "Red"}, {15, "White"},
-	{58, "Creamsicle"}, {63, "Orange"}, {71, "Gold"}, {79, "Yellow"}, {95, "Moss"},
-	{109, "Green"}, {127, "Aqua"}, {138, "Sky"}, {159, "Blue"}, {169, "Purple"},
-	{127, "Aqua"}, {175, "Steel"}, {187, "Magenta"}, {199, "Lavender"},
-	{207, "Rosy"}, {215, "Lilac"}, {238, "Brown"}, {251, "Beige"}
+	{15, "White"}, {21, "Gray"}, {28, "Black"}, {47, "Red"}, {58, "Creamsicle"},
+	{63, "Orange"}, {71, "Gold"}, {79, "Yellow"}, {95, "Moss"}, {109, "Green"},
+	{127, "Aqua"}, {138, "Sky"}, {159, "Blue"}, {169, "Purple"}, {175, "Steel"},
+	{187, "Magenta"}, {199, "Lavender"}, {207, "Rosy"}, {215, "Lilac"},
+	{238, "Brown"}, {251, "Beige"}, {0, NULL}
 };
 static CV_PossibleValue_t secbright_cons_t[] = {{0, "MIN"}, {255, "MAX"}, {0, NULL}};
 
