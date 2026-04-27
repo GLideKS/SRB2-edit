@@ -882,6 +882,19 @@ INT16 G_SoftwareClipAimingPitch(INT32 *aiming)
 	return (INT16)((*aiming)>>16);
 }
 
+INT16 G_ClipAimingAngle(INT32 *angle) // 2D mode exclusive
+{
+	INT32 limitangle;
+	limitangle = ANGLE_45 + ANG10;
+
+	if (*angle > limitangle)
+		*angle = limitangle;
+	else if (*angle < -limitangle)
+		*angle = -limitangle;
+
+	return (INT16)((*angle )>>16);
+}
+
 INT32 JoyAxis(joyaxis_e axissel)
 {
 	INT32 retaxis;
