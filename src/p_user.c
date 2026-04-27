@@ -10119,9 +10119,9 @@ boolean P_MoveChaseCamera(player_t *player, camera_t *thiscam, boolean resetcall
 
 	if (twodlevel || (mo->flags2 & MF2_TWOD))
 	{
-		//angle = ANGLE_90;
 		angle = focusangle + FixedAngle(camrotate*FRACUNIT);
 		G_ClipAimingAngle((INT32 *)&angle);
+		P_ForceLocalAngle2D(player, angle);
 		angle += ANGLE_90;
 	}
 	else if (camstill || resetcalled || player->playerstate == PST_DEAD)
@@ -13254,6 +13254,16 @@ void P_ForceLocalAngle(player_t *player, angle_t angle)
 	if (player->mo && (twodlevel || (player->mo->flags2 & MF2_TWOD)))
 		return;
 
+	angle = angle & ~UINT16_MAX;
+
+	if (player == &players[consoleplayer])
+		localangle = angle;
+	else if (player == &players[secondarydisplayplayer])
+		localangle2 = angle;
+}
+
+void P_ForceLocalAngle2D(player_t *player, angle_t angle) // don't ask...
+{
 	angle = angle & ~UINT16_MAX;
 
 	if (player == &players[consoleplayer])

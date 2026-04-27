@@ -1587,7 +1587,11 @@ void G_BuildTiccmd(ticcmd_t *cmd, INT32 realtics, UINT8 ssplayer)
 				keyboard_look[forplayer] = true;
 			}
 			else if (ticcmd_centerviewdown[forplayer])
+			{
 				*myaiming = 0;
+				if (twodlevel || (player->mo->flags2 & MF2_TWOD))
+					*myangle = 0;
+			}
 		}
 
 		// accept no mlook for network games

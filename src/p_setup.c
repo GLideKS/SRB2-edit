@@ -8108,6 +8108,8 @@ boolean P_LoadLevel(boolean fromnetsave, boolean reloadinggamestate)
 		P_InitCamera();
 		localaiming = 0;
 		localaiming2 = 0;
+		if (twodlevel)
+			localangle = localangle2 = 0;
 	}
 
 	// clear special respawning que
