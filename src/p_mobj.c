@@ -11785,7 +11785,6 @@ void P_AfterPlayerSpawn(INT32 playernum)
 	mobj_t *mobj = p->mo;
 
 	P_SetPlayerAngle(p, mobj->angle);
-	P_ForceLocalAngle(p, mobj->angle);
 
 	p->viewheight = 41*p->height/48;
 
