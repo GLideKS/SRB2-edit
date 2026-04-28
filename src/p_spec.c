@@ -2706,9 +2706,19 @@ static void P_ProcessLineSpecial(line_t *line, mobj_t *mo, sector_t *callsec)
 			if (mo && mo->player)
 			{
 				if (line->args[0])
+				{
+					if (mo->flags2 & MF2_TWOD)
+						P_ForceLocalAngle2D(mo->player, mo->angle);
+
 					mo->flags2 &= ~MF2_TWOD;
+				}
 				else
+				{
+					if (!(mo->flags2 & MF2_TWOD))
+						P_ForceLocalAngle(mo->player, 0);
+
 					mo->flags2 |= MF2_TWOD;
+				}
 
 				// Copy effect to bot if necessary
 				// (Teleport them to you so they don't break it.)
