@@ -9931,6 +9931,9 @@ void P_ResetCamera(player_t *player, camera_t *thiscam)
 	&& !(thiscam == &camera2 && (cv_cam2_still.value || cv_analog[1].value)))
 	{
 		thiscam->angle = player->mo->angle;
+		if (twodlevel || (player->mo->flags2 & MF2_TWOD))
+			thiscam->angle = ANGLE_90;
+
 		thiscam->aiming = 0;
 	}
 	thiscam->relativex = 0;
@@ -10115,7 +10118,12 @@ boolean P_MoveChaseCamera(player_t *player, camera_t *thiscam, boolean resetcall
 		camheight += thiscam->height;
 
 	if (twodlevel || (mo->flags2 & MF2_TWOD))
-		angle = ANGLE_90 - ANG10;
+	{
+		angle = focusangle + FixedAngle(camrotate*FRACUNIT);
+		G_ClipAimingAngle((INT32 *)&angle);
+		P_ForceLocalAngle2D(player, angle);
+		angle += ANGLE_90;
+	}
 	else if (camstill || resetcalled || player->playerstate == PST_DEAD)
 		angle = thiscam->angle;
 	else if (player->powers[pw_carry] == CR_NIGHTSMODE) // NiGHTS Level
@@ -13242,6 +13250,19 @@ angle_t P_GetLocalAngle(player_t *player)
 }
 
 void P_ForceLocalAngle(player_t *player, angle_t angle)
+{
+	if (player->mo && (twodlevel || (player->mo->flags2 & MF2_TWOD)))
+		return;
+
+	angle = angle & ~UINT16_MAX;
+
+	if (player == &players[consoleplayer])
+		localangle = angle;
+	else if (player == &players[secondarydisplayplayer])
+		localangle2 = angle;
+}
+
+void P_ForceLocalAngle2D(player_t *player, angle_t angle) // don't ask...
 {
 	angle = angle & ~UINT16_MAX;
 

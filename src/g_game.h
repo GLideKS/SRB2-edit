@@ -133,6 +133,7 @@ ticcmd_t *G_MoveTiccmd(ticcmd_t* dest, const ticcmd_t* src, const size_t n);
 // clip the console player aiming to the view
 INT16 G_ClipAimingPitch(INT32 *aiming);
 INT16 G_SoftwareClipAimingPitch(INT32 *aiming);
+INT16 G_ClipAimingAngle(INT32 *angle);
 
 extern angle_t localangle, localangle2;
 extern INT32 localaiming, localaiming2; // should be an angle_t but signed
