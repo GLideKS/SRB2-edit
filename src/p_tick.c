@@ -754,7 +754,6 @@ void P_Ticker(boolean run)
 		
 		S_SetStackAdjustmentStart();
 		
-		// tick prethink too cause takis uses it for controls (only if toggled)
 		if (freezelevelthinkers_thinkframers)
 		{
 			PS_START_TIMING(ps_lua_prethinkframe_time);

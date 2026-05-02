@@ -89,17 +89,18 @@ You can compile the source code normally (see "Compiling") and put the binary in
 # Lua Additions
 
 ## Global variables
-- "`takis_custombuild`" (Read only) (boolean) :  Global to detect if the client is using this build
-- "`takis_complexlocaladdons`" (Read only) (boolean) : Global to detect if the client has loaded local addons with lua in them
-- "`takis_locallyloading`" (Read only) (boolean) : Only set during script loading, detects whether the script is being loaded locally
+- "`gks_custombuild`" (Read only) (boolean):  Global to detect if the client is using this build
+- "`gks_complexlocaladdons`" (Read only) (boolean): Global to detect if the client has loaded local addons with lua in them
+- "`gks_locallyloading`" (Read only) (boolean): Only set during script loading, detects whether the script is being loaded locally
+- "`gks_lumpname`" (Read only) (string): Only set during script loading, returns the name of the Lua script being loaded
 
   Example:
   ```lua
-  if (takis_locallyloading) then
-    --do local stuff here
+  if (gks_locallyloading) then
+    -- do client-side here
     return
   end
-  --normal, gameplay editing code
+  -- do synched here
   ```
 - "`demoplayback`" (Read only) (boolean) : True if viewing a demo.
 

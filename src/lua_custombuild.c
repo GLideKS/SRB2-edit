@@ -8,7 +8,7 @@
 // See the 'LICENSE' file for more details.
 //-----------------------------------------------------------------------------
 /// \file  lua_custombuild.c
-/// \brief currently only used for lua scripts to detect this build
+/// \brief Currently only used for lua scripts to detect this build specifically
 
 #include "doomdef.h"
 #include "fastcmp.h"
@@ -18,26 +18,22 @@
 #include "lua_libs.h"
 #include "lua_custombuild.h"
 
-boolean takis_custombuild = true;
-// if TRUE, the user loaded a local addon that has more than just music lumps
-boolean takis_complexlocaladdons = false;
-
-//this build isnt officially called anything, so i'll just use "takis" for now
-INT32 Takis_PushGlobals(lua_State *L, const char *word)
+boolean gks_complexlocaladdons = false;
+INT32 GKS_PushGlobals(lua_State *L, const char *word)
 {
-    if (fastcmp(word,"takis_custombuild")) {
-		lua_pushboolean(L, takis_custombuild);
+    if (fastcmp(word,"gks_custombuild")) {
+		lua_pushboolean(L, true);
 		return 1;
-    } else if (fastcmp(word, "takis_complexlocaladdons")) {
-		lua_pushboolean(L, takis_complexlocaladdons);
+    } else if (fastcmp(word, "gks_complexlocaladdons")) {
+		lua_pushboolean(L, gks_complexlocaladdons);
 		return 1;
-	} else if (fastcmp(word, "takis_locallyloading")) {
+	} else if (fastcmp(word, "gks_locallyloading")) {
         if (lua_locallyloading)
 		    lua_pushboolean(L, true);
         else
             lua_pushboolean(L, false);
 		return 1;
-    } else if (fastcmp(word, "takis_lumpname")) {
+    } else if (fastcmp(word, "gks_lumpname")) {
 		if (!lua_lumploading)
 			lua_pushnil(L);
 		else if (lua_lumpname[0])
