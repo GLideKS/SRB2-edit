@@ -256,8 +256,7 @@ boolean cht_Responder(event_t *ev)
 #define REQUIRE_NOULTIMATE if (ultimatemode)\
 { CONS_Printf(M_GetText("You're too good to be cheating!\n")); return; }
 
-// TODO: check if other clients have this build too
-#define REQUIRE_TAKISBUILDONLY if (!addedtogame || consoleplayer < 0 || !playeringame[consoleplayer] || serverplayer != consoleplayer)\
+#define REQUIRE_GKSBUILDONLY if (!addedtogame || consoleplayer < 0 || !playeringame[consoleplayer] || serverplayer != consoleplayer)\
 { CONS_Printf(M_GetText("Only the server can use this on this modified build.\n")); return; }
 
 // command that can be typed at the console!
@@ -1463,7 +1462,7 @@ void Command_FreezeLevel_f(void)
 	size_t thinkframes;
 
 	REQUIRE_INLEVEL;
-	REQUIRE_TAKISBUILDONLY;
+	REQUIRE_GKSBUILDONLY;
 
 	G_SetUsedCheats(false);
     thinkframes = COM_CheckPartialParm("-t");

@@ -3615,7 +3615,7 @@ static void Command_Addfilelocal(void)
 	int musiconly = W_VerifyNMUSlumps(fn, false);
     if (!musiconly)
     {
-        takis_complexlocaladdons = true;
+        gks_complexlocaladdons = true;
     }
     
 	// Add any wad file, ignoring checks for if it contains complex things like

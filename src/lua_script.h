@@ -43,8 +43,8 @@ void LUA_ClearExtVars(void);
 #endif
 
 extern INT32 lua_lumploading; // is LUA_LoadLump being called?
-extern INT32 lua_locallyloading; // is this wad file being loaded locally?
-extern char *lua_lumpname;
+extern INT32 lua_locallyloading; // is this file being loaded locally?
+extern char *lua_lumpname; // the name of the current Lua lump being loaded
 
 int LUA_GetErrorMessage(lua_State *L);
 int LUA_Call(lua_State *L, int nargs, int nresults, int errorhandlerindex);

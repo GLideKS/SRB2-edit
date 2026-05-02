@@ -448,7 +448,7 @@ int LUA_PushGlobals(lua_State *L, const char *word)
 		return 1;
 	}
 
-	if (Takis_PushGlobals(L, word))
+	if (GKS_PushGlobals(L, word))
 		return 1;
 	
 	return 0;

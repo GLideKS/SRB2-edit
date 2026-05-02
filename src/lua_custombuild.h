@@ -7,16 +7,15 @@
 // See the 'LICENSE' file for more details.
 //-----------------------------------------------------------------------------
 /// \file  lua_custombuild.h
-/// \brief Custom Build BLua stuff
+/// \brief Custom build Lua stuff
 
-#ifndef __TAKIS_LUA__
-#define __TAKIS_LUA__
+#ifndef __GKS_LUA__
+#define __GKS_LUA__
 
 #include "lua_script.h"
 
-extern boolean takis_custombuild;
-extern boolean takis_complexlocaladdons;
+extern boolean gks_complexlocaladdons;
 
-INT32 Takis_PushGlobals(lua_State *L, const char *word);
+INT32 GKS_PushGlobals(lua_State *L, const char *word);
 
-#endif // __TAKIS_LUA__
+#endif // __GKS_LUA__
