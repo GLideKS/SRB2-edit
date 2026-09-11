@@ -1862,7 +1862,7 @@ static void HU_DrawChat(void)
 					if (i != n) continue;
 			}
 
-			if (playeringame[i] || ((INT32)i == 0))
+			if (playeringame[i])
 			{
 				V_DrawFill(chatx+boxw+2, p_dispy - (4*count) - 1, 61, 6, CHATOPACITY|cv_menubgcolor.value|chatsnap); // fill it like the chat so the text doesn't become hard to read because of the hud.
 				V_DrawSmallThinString(chatx+boxw+4, p_dispy - (4*count), chatsnap|V_ALLOWLOWERCASE, va("\x82%d\x80 %s", i, player_names[i]));
